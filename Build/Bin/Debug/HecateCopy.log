@@ -1,4 +1,5 @@
-﻿  已复制         1 个文件。
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (E:\exercise\vs2015\lzwgitHub\Hecate\Build\Bin\Debug\) contains files shared from another project (Hecate.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  已复制         1 个文件。
   已复制         1 个文件。
   已复制         1 个文件。
   已复制         1 个文件。
