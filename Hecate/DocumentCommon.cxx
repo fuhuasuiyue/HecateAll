@@ -298,6 +298,13 @@ void DocumentCommon::updatePartList()
 
 }
 
+
+QList<PartModel*> DocumentCommon::getPartModelList()
+{
+	return m_partModelList;
+
+}
+
 void DocumentCommon::onWireframe()
 {
     QApplication::setOverrideCursor( Qt::WaitCursor );

@@ -736,11 +736,14 @@ void ApplicationCommonWindow::onImportStepFile()
 
 void ApplicationCommonWindow::onMotionCalculator()
 {
-	TestHCMotionCalc pHCMotion = LibManager::loadHCMotionCalc();
+	HCMotionCalc pHCMotion = LibManager::loadHCMotionCalc();
 	if (!pHCMotion)
 	{
 		return;
 	}
-	pHCMotion();
+	QMdiArea* ws = getWorkspace();
+	DocumentCommon* doc = (DocumentCommon*)(qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget())->getDocument());
+	
+	pHCMotion(doc->getPartModelList());
 }
 

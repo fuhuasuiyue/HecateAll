@@ -32,6 +32,7 @@ public:
 	PartModel* getPartModel(TopoDS_Shape selectedShape);
 	int getUniquePartModelID(int partID);
 	void updatePartList();
+	QList<PartModel*> getPartModelList();
 	
 protected:
 	virtual MDIWindow* createNewMDIWindow();
