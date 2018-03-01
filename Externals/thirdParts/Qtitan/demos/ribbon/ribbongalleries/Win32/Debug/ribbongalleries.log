@@ -1,0 +1,19 @@
+﻿  Moc'ing aboutdialog.h...
+  Moc'ing mainwindow.h...
+  Moc'ing ribbonwindow.h...
+  Generate moc_predefs.h
+  Rcc'ing ..\..\shared\aboutdialog.qrc...
+  Rcc'ing ribbongalleries.qrc...
+  aboutdialog.cpp
+  moc_aboutdialog.cpp
+  moc_mainwindow.cpp
+  moc_ribbonwindow.cpp
+  galleryItems.cpp
+  qrc_aboutdialog.cpp
+  qrc_ribbongalleries.cpp
+  main.cpp
+  mainwindow.cpp
+  ribbonwindow.cpp
+  正在生成代码...
+  ribbongalleries.vcxproj -> E:\exercise\vs2015\Qtitan\demos\ribbon\ribbongalleries\..\..\..\bin\ribbongalleriesd.exe
+  ribbongalleries.vcxproj -> ..\..\..\bin\ribbongalleriesd.pdb (Full PDB)

@@ -1,0 +1,5 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (E:\exercise\vs2015\lzwgitHub\Hecate\Build\Bin\Debug\) contains files shared from another project (HecateCopy.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  HCMotionCalculator.cpp
+    正在创建库 E:\exercise\vs2015\lzwgitHub\Hecate\Build\lib\Win32\Debug\HCMotionCalculator.lib 和对象 E:\exercise\vs2015\lzwgitHub\Hecate\Build\lib\Win32\Debug\HCMotionCalculator.exp
+  HCMotionCalculator.vcxproj -> E:\exercise\vs2015\lzwgitHub\Hecate\Build\Bin\Win32\Debug\HCMotionCalculator.dll
+  HCMotionCalculator.vcxproj -> E:\exercise\vs2015\lzwgitHub\Hecate\Build\Bin\Win32\Debug\HCMotionCalculator.pdb (Full PDB)

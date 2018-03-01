@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HecateCopy", "HecateCopy\HecateCopy.vcxproj", "{B1B54B18-45D5-4321-A2F7-1B5A5CD7A089}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hecate", "Hecate\Hecate.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B1B54B18-45D5-4321-A2F7-1B5A5CD7A089} = {B1B54B18-45D5-4321-A2F7-1B5A5CD7A089}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HCMotionCalculator", "HCMotionCalculator\HCMotionCalculator.vcxproj", "{F4157620-BFF7-4D5C-BA77-508ED75E7C03}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1B54B18-45D5-4321-A2F7-1B5A5CD7A089}.Debug|x64.ActiveCfg = Debug|x64
+		{B1B54B18-45D5-4321-A2F7-1B5A5CD7A089}.Debug|x64.Build.0 = Debug|x64
+		{B1B54B18-45D5-4321-A2F7-1B5A5CD7A089}.Debug|x86.ActiveCfg = Debug|Win32
+		{B1B54B18-45D5-4321-A2F7-1B5A5CD7A089}.Debug|x86.Build.0 = Debug|Win32
+		{B1B54B18-45D5-4321-A2F7-1B5A5CD7A089}.Release|x64.ActiveCfg = Release|x64
+		{B1B54B18-45D5-4321-A2F7-1B5A5CD7A089}.Release|x64.Build.0 = Release|x64
+		{B1B54B18-45D5-4321-A2F7-1B5A5CD7A089}.Release|x86.ActiveCfg = Release|Win32
+		{B1B54B18-45D5-4321-A2F7-1B5A5CD7A089}.Release|x86.Build.0 = Release|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x64.ActiveCfg = Debug|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x86.ActiveCfg = Debug|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x86.Build.0 = Debug|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.ActiveCfg = Release|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x86.ActiveCfg = Release|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x86.Build.0 = Release|Win32
+		{F4157620-BFF7-4D5C-BA77-508ED75E7C03}.Debug|x64.ActiveCfg = Debug|Win32
+		{F4157620-BFF7-4D5C-BA77-508ED75E7C03}.Debug|x86.ActiveCfg = Debug|Win32
+		{F4157620-BFF7-4D5C-BA77-508ED75E7C03}.Debug|x86.Build.0 = Debug|Win32
+		{F4157620-BFF7-4D5C-BA77-508ED75E7C03}.Release|x64.ActiveCfg = Release|Win32
+		{F4157620-BFF7-4D5C-BA77-508ED75E7C03}.Release|x86.ActiveCfg = Release|Win32
+		{F4157620-BFF7-4D5C-BA77-508ED75E7C03}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
