@@ -50,6 +50,7 @@ public slots:
 	void                            onSetMaterial(int theMaterial);
 	void							onCreateOCCBottle();
 	void onImportStepFile();
+	void onMotionCalculator();
 
 protected:
 	virtual void                    resizeEvent(QResizeEvent*);

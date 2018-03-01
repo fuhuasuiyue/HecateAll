@@ -23,6 +23,7 @@
 #include "AIS_Shape.hxx"
 #include "Standard_Handle.hxx"
 #include <AIS_InteractiveObject.hxx>
+#include "LibManager.h"
 static ApplicationCommonWindow* stApp = 0;
 static QMdiArea* stWs = 0;
 
@@ -668,16 +669,19 @@ void ApplicationCommonWindow::createGroupClipboard(Qtitan::RibbonPage* page)
 	{
 		groupClipboard->setOptionButtonVisible();		
 		QPixmap newIcon, helpIcon, closeIcon, makeBottleIcon, importFileIcon;
+		QPixmap motionIcon;
 
 		newIcon = QPixmap(dir + QObject::tr("largeNewFile.png"));
 		helpIcon = QPixmap(dir + QObject::tr("LargeHelp.png"));
 		closeIcon = QPixmap(dir + QObject::tr("largeClose.png"));
 		makeBottleIcon = QPixmap(dir + QObject::tr("SampleImportExport.png"));
 		importFileIcon = QPixmap(dir + QObject::tr("import.png"));
+		motionIcon = QPixmap(dir + QObject::tr("Motion.png"));
 
 		QAction * fileNewAction, *fileCloseAction, *filePrefUseVBOAction,
 			*fileQuitAction, *viewToolAction, *viewStatusAction, *helpAboutAction,
 			*makeBottleAction, *importAction;
+		QAction *motionCalcAction;
 
 		fileNewAction = groupClipboard->addAction(newIcon, tr("&NewFile"), Qt::ToolButtonTextUnderIcon);
 		fileNewAction->setToolTip(QObject::tr("NewiFile"));
@@ -706,6 +710,9 @@ void ApplicationCommonWindow::createGroupClipboard(Qtitan::RibbonPage* page)
 		importAction = groupClipboard->addAction(importFileIcon, tr("&ImportFile"), Qt::ToolButtonTextUnderIcon);
 		connect(importAction, SIGNAL(triggered()), this, SLOT(onImportStepFile()));
 
+		motionCalcAction = groupClipboard->addAction(motionIcon, tr("MCalc"), Qt::ToolButtonTextUnderIcon);
+		connect(motionCalcAction, SIGNAL(triggered()), this, SLOT(onMotionCalculator()));
+
 	}
 }
 
@@ -725,5 +732,15 @@ void ApplicationCommonWindow::onImportStepFile()
 	QMdiArea* ws = getWorkspace();
 	DocumentCommon* doc = (DocumentCommon*)(qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget())->getDocument());
 	doc->onImportSTPFile();
+}
+
+void ApplicationCommonWindow::onMotionCalculator()
+{
+	TestHCMotionCalc pHCMotion = LibManager::loadHCMotionCalc();
+	if (!pHCMotion)
+	{
+		return;
+	}
+	pHCMotion();
 }
 
