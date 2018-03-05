@@ -191,3 +191,9 @@ MakeBottle(const Standard_Real myWidth, const Standard_Real myHeight,
   return aRes;
 }
 
+TopoDS_Shape createAxis()
+{
+	TopoDS_Shape oShape;
+	return oShape;
+}
+

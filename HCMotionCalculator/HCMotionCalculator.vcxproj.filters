@@ -32,9 +32,15 @@
     <ClCompile Include="TestHCFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HCDynamicsWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HCMotionCalculator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HCDynamicsWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

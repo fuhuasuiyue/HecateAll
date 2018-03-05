@@ -12,6 +12,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hecate", "Hecate\Hecate.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HCMotionCalculator", "HCMotionCalculator\HCMotionCalculator.vcxproj", "{F4157620-BFF7-4D5C-BA77-508ED75E7C03}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HCProjectData", "HCProjectData\HCProjectData.vcxproj", "{21BA8B8A-2328-4655-93E1-D6C6D05DFA85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -40,6 +42,12 @@ Global
 		{F4157620-BFF7-4D5C-BA77-508ED75E7C03}.Release|x64.ActiveCfg = Release|Win32
 		{F4157620-BFF7-4D5C-BA77-508ED75E7C03}.Release|x86.ActiveCfg = Release|Win32
 		{F4157620-BFF7-4D5C-BA77-508ED75E7C03}.Release|x86.Build.0 = Release|Win32
+		{21BA8B8A-2328-4655-93E1-D6C6D05DFA85}.Debug|x64.ActiveCfg = Debug|Win32
+		{21BA8B8A-2328-4655-93E1-D6C6D05DFA85}.Debug|x86.ActiveCfg = Debug|Win32
+		{21BA8B8A-2328-4655-93E1-D6C6D05DFA85}.Debug|x86.Build.0 = Debug|Win32
+		{21BA8B8A-2328-4655-93E1-D6C6D05DFA85}.Release|x64.ActiveCfg = Release|Win32
+		{21BA8B8A-2328-4655-93E1-D6C6D05DFA85}.Release|x86.ActiveCfg = Release|Win32
+		{21BA8B8A-2328-4655-93E1-D6C6D05DFA85}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

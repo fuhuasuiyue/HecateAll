@@ -103,9 +103,6 @@
     <ClCompile Include="MakeBottle.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PartModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ImportOCAF.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -168,9 +165,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OcctWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PartModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImportOCAF.h">

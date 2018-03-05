@@ -18,6 +18,7 @@
 
 #include <TopoDS_Shape.hxx>
 #include <AIS_Shape.hxx>
+#include <AIS_Point.hxx>
 #include "QFileDialog"
 #include "QFileInfo"
 #include "XCAFApp_Application.hxx"
@@ -29,6 +30,11 @@
 #include <QMdiSubWindow>
 #include "QMessageBox"
 #include <QDebug>
+#include "TopoDS_Vertex.hxx"
+#include "TopoDS.hxx"
+#include "BRep_Tool.hxx"
+#include "Geom_Curve.hxx"
+#include "TopoDS_Edge.hxx"
 
 TopoDS_Shape
 MakeBottle(const Standard_Real myWidth, const Standard_Real myHeight, const Standard_Real myThickness);
@@ -77,9 +83,9 @@ myNbViews( 0 )
   myViewer->SetLightOn();
 
   myContext = new AIS_InteractiveContext (myViewer);
- // myContext->CloseAllContexts(true);
+  //myContext->CloseAllContexts(true);
 
- // myContext->OpenLocalContext(true, true, false, false);
+  //myContext->OpenLocalContext(true, true, false, false);
  // /* Ñ¡ÔñÄ£Ê½
 	//TopAbs_COMPOUND,
 	//TopAbs_COMPSOLID,
@@ -97,10 +103,10 @@ myNbViews( 0 )
  // //myContext->ActivateStandardMode(TopAbs_SHELL);
  // //myContext->ActivateStandardMode(TopAbs_FACE);
  // //myContext->ActivateStandardMode(TopAbs_WIRE);
- // //myContext->ActivateStandardMode(TopAbs_EDGE);
- // //myContext->ActivateStandardMode(TopAbs_VERTEX);
+	//myContext->ActivateStandardMode(TopAbs_EDGE);
+	//myContext->ActivateStandardMode(TopAbs_VERTEX);
  // myContext->ActivateStandardMode(TopAbs_SHAPE);
- // myContext->OpenLocalContext();
+  //myContext->OpenLocalContext();
   m_partModelList.clear();
 }
 
@@ -420,19 +426,53 @@ void DocumentCommon::onImportSTPFile()
 void DocumentCommon::onSelectedModel()
 {
 	myContext->InitSelected();
-	Handle(AIS_InteractiveObject) Current = myContext->SelectedInteractive();
-	// test
-	Handle(AIS_Shape) pCurrentShape = dynamic_cast<AIS_Shape*>(Current.get());
-	if (!pCurrentShape.IsNull())
+	//Handle(AIS_Shape) S = Handle(AIS_Shape)::DownCast(myContext->Interactive());
+	if (myContext->MoreSelected())
 	{
-		TopoDS_Shape pDSShape = pCurrentShape->Shape();
-		PartModel* pCurrentModel = getPartModel(pDSShape);
-		if (pCurrentModel != nullptr)
+		Handle(AIS_Shape) aSelInteractive = (Handle(AIS_Shape)::DownCast(myContext->SelectedInteractive()));
+		if (aSelInteractive.IsNull())
 		{
-			qDebug() << pCurrentModel->getPartName();
-			qDebug() << pCurrentModel->getPartID();
+			qDebug() << "No AIS_Shape is selected!";
+			return;
+		}
+
+		for (myContext->InitSelected(); myContext->MoreSelected(); myContext->NextSelected())
+		{
+			const TopoDS_Shape& aSelShape = myContext->SelectedShape();
+			if (aSelShape.ShapeType() == TopAbs_VERTEX)
+			{
+				TopoDS_Vertex aSleVertex = TopoDS::Vertex(myContext->SelectedShape().Located(TopLoc_Location()));
+				gp_Pnt p = BRep_Tool::Pnt(aSleVertex);
+				Standard_Real dTolerance = BRep_Tool::Tolerance(aSleVertex);
+				qDebug() << "Vertex position: (" << p.X() << ", " << p.Y() << ", " << p.Z() << ")";
+				qDebug() << "Vertex Tolerance: " << dTolerance;
+				//std::cout << "Vertex orientation: " << DumpOrientation(v.Orientation()) << std::endl;
+			}
+
+			if (aSelShape.ShapeType() == TopAbs_EDGE)
+			{
+				TopoDS_Edge aSelEdge = TopoDS::Edge(myContext->SelectedShape().Located(TopLoc_Location()));
+				Standard_Real first, second;
+				Handle(Geom_Curve) aCurve = BRep_Tool::Curve(aSelEdge, first, second);
+				qDebug() << "Standard_Real : (" << first << ", " << first  << ")";
+				//qDebug() << "Geom_Curve: " << dTolerance;
+			}
+			
 		}
 	}
+	//Handle(AIS_InteractiveObject) Current = myContext->SelectedInteractive();
+	//// test
+	//Handle(AIS_Shape) pCurrentShape = dynamic_cast<AIS_Shape*>(Current.get());
+	//if (!pCurrentShape.IsNull())
+	//{
+	//	TopoDS_Shape pDSShape = pCurrentShape->Shape();
+	//	PartModel* pCurrentModel = getPartModel(pDSShape);
+	//	if (pCurrentModel != nullptr)
+	//	{
+	//		qDebug() << pCurrentModel->getPartName();
+	//		qDebug() << pCurrentModel->getPartID();
+	//	}
+	//}
 	// -test
 }
 
