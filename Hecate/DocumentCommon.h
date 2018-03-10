@@ -10,6 +10,7 @@
 #include <AIS_InteractiveContext.hxx>
 #include <V3d_Viewer.hxx>
 #include "PartModel.h"
+#include "AIS_Shape.hxx"
 
 class ApplicationCommonWindow;
 
@@ -55,6 +56,10 @@ public slots:
 	void                           onTransparency( int );
 	void onImportSTPFile();
 	void onSelectedModel();
+	void onStartAnimation();
+	void onStopAnimation();
+	void onKillTimer(int nID);
+	void onResetLocation();
 private:
 	Handle(V3d_Viewer)             Viewer (const Standard_ExtString theName,
                                          const Standard_CString theDomain,
@@ -62,6 +67,8 @@ private:
                                          const V3d_TypeOfOrientation theViewProj,
                                          const Standard_Boolean theComputedMode,
                                          const Standard_Boolean theDefaultComputedMode );
+
+	virtual void timerEvent(QTimerEvent *event) override;
 
 protected:
 	ApplicationCommonWindow*       myApp;
@@ -71,6 +78,9 @@ protected:
 	int                            myIndex;
 	int                            myNbViews;
 	QList<PartModel*> m_partModelList;
+	QList<Handle(AIS_Shape)> m_AISShapeList;
+	int m_TimerID;
+	int m_CurrentFrame;
 };
 
 #endif

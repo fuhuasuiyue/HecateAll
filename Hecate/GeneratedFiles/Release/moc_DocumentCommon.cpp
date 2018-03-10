@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_DocumentCommon_t {
-    QByteArrayData data[14];
-    char stringdata0[171];
+    QByteArrayData data[16];
+    char stringdata0[203];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -44,14 +44,17 @@ QT_MOC_LITERAL(9, 117, 8), // "onDelete"
 QT_MOC_LITERAL(10, 126, 11), // "onWireframe"
 QT_MOC_LITERAL(11, 138, 9), // "onShading"
 QT_MOC_LITERAL(12, 148, 7), // "onColor"
-QT_MOC_LITERAL(13, 156, 14) // "onTransparency"
+QT_MOC_LITERAL(13, 156, 14), // "onTransparency"
+QT_MOC_LITERAL(14, 171, 15), // "onImportSTPFile"
+QT_MOC_LITERAL(15, 187, 15) // "onSelectedModel"
 
     },
     "DocumentCommon\0selectionChanged\0\0"
     "sendCloseDocument\0DocumentCommon*\0"
     "onCloseView\0MDIWindow*\0onCreateNewView\0"
     "onMaterial\0onDelete\0onWireframe\0"
-    "onShading\0onColor\0onTransparency"
+    "onShading\0onColor\0onTransparency\0"
+    "onImportSTPFile\0onSelectedModel"
 };
 #undef QT_MOC_LITERAL
 
@@ -61,7 +64,7 @@ static const uint qt_meta_data_DocumentCommon[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -69,20 +72,22 @@ static const uint qt_meta_data_DocumentCommon[] = {
        2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   74,    2, 0x06 /* Public */,
-       3,    1,   75,    2, 0x06 /* Public */,
+       1,    0,   84,    2, 0x06 /* Public */,
+       3,    1,   85,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       5,    1,   78,    2, 0x0a /* Public */,
-       7,    0,   81,    2, 0x0a /* Public */,
-       8,    0,   82,    2, 0x0a /* Public */,
-       8,    1,   83,    2, 0x0a /* Public */,
-       9,    0,   86,    2, 0x0a /* Public */,
-      10,    0,   87,    2, 0x0a /* Public */,
-      11,    0,   88,    2, 0x0a /* Public */,
-      12,    0,   89,    2, 0x0a /* Public */,
-      13,    0,   90,    2, 0x0a /* Public */,
-      13,    1,   91,    2, 0x0a /* Public */,
+       5,    1,   88,    2, 0x0a /* Public */,
+       7,    0,   91,    2, 0x0a /* Public */,
+       8,    0,   92,    2, 0x0a /* Public */,
+       8,    1,   93,    2, 0x0a /* Public */,
+       9,    0,   96,    2, 0x0a /* Public */,
+      10,    0,   97,    2, 0x0a /* Public */,
+      11,    0,   98,    2, 0x0a /* Public */,
+      12,    0,   99,    2, 0x0a /* Public */,
+      13,    0,  100,    2, 0x0a /* Public */,
+      13,    1,  101,    2, 0x0a /* Public */,
+      14,    0,  104,    2, 0x0a /* Public */,
+      15,    0,  105,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -99,6 +104,8 @@ static const uint qt_meta_data_DocumentCommon[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    2,
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -121,6 +128,8 @@ void DocumentCommon::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 9: _t->onColor(); break;
         case 10: _t->onTransparency(); break;
         case 11: _t->onTransparency((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 12: _t->onImportSTPFile(); break;
+        case 13: _t->onSelectedModel(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -186,13 +195,13 @@ int DocumentCommon::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 12)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 14;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 12)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 14;
     }
     return _id;
 }

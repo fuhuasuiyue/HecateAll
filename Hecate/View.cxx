@@ -282,6 +282,31 @@ void View::SetRaytracedAntialiasing (bool theState)
   myContext->UpdateCurrentViewer();
 }
 
+QString View::GetMessages(int type, TopAbs_ShapeEnum aSubShapeType, TopAbs_ShapeEnum aShapeType)
+{
+	return QString();
+}
+
+QString View::GetShapeType(TopAbs_ShapeEnum aShapeType)
+{
+	return QString();
+}
+
+Standard_EXPORT void View::OnButtonuseraction(int ExerciceSTEP, Handle(AIS_InteractiveContext)&)
+{
+	return Standard_EXPORT void();
+}
+
+Standard_EXPORT void View::DoSelection(int Id, Handle(AIS_InteractiveContext)&)
+{
+	return Standard_EXPORT void();
+}
+
+Standard_EXPORT void View::OnSetSelectionMode(Handle(AIS_InteractiveContext)&, Standard_Integer &, TopAbs_ShapeEnum & SelectionMode, Standard_Boolean &)
+{
+	return Standard_EXPORT void();
+}
+
 void View::EnableRaytracing()
 {
   if (!myIsRaytracing)
@@ -991,6 +1016,11 @@ void View::noActiveActions()
             anAction->setChecked( false );
         }
     }
+}
+
+bool View::isShadingMode()
+{
+	return false;
 }
 
 void View::onBackground()

@@ -31,7 +31,6 @@ MDIWindow::MDIWindow( DocumentCommon* aDocument, QWidget* parent, Qt::WindowFlag
 : QMainWindow( parent, wflags )
 {
   QFrame *vb = new QFrame( this );
-
   QVBoxLayout *layout = new QVBoxLayout( vb );
   layout->setMargin( 0 );
 

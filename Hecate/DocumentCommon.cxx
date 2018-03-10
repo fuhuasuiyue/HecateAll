@@ -69,12 +69,48 @@ Handle(V3d_Viewer) DocumentCommon::Viewer (const Standard_ExtString ,
   return aViewer;
 }
 
-DocumentCommon::DocumentCommon( const int theIndex, ApplicationCommonWindow* app )
+
+void DocumentCommon::timerEvent(QTimerEvent *event)
+{
+	//m_partModelList;
+	if (!m_AISShapeList.empty())
+	{
+		// 先获得帧数，按照帧遍历, 在按照每一帧中Model的位置更新
+		int nTrsSize = m_partModelList.at(0)->getPartModelTransform().size();
+		if (nTrsSize==0)
+		{			
+			return;
+		}
+
+		for (int nCurrent = 0; nCurrent < m_AISShapeList.size(); ++nCurrent)
+		{
+			Handle(AIS_Shape) ipCurrentAIS = m_AISShapeList.value(nCurrent);
+			PartModel* pCurrentPartModel = m_partModelList.at(nCurrent);
+			gp_Trsf tempTrs = pCurrentPartModel->getPartModelTransform().at(m_CurrentFrame);
+			TopLoc_Location oCurrentLocation(tempTrs);
+
+			myContext->SetLocation(ipCurrentAIS, oCurrentLocation);
+			myContext->UpdateCurrentViewer();
+		}
+		m_CurrentFrame++;
+		if (m_CurrentFrame>=nTrsSize)
+		{
+			m_CurrentFrame = 0;
+			onKillTimer(m_TimerID);
+		}
+
+
+	}
+	//throw std::logic_error("The method or operation is not implemented.");
+}
+
+DocumentCommon::DocumentCommon(const int theIndex, ApplicationCommonWindow* app)
 : QObject( app ),
 myApp( app ),
 myIndex( theIndex ),
 myNbViews( 0 )
 {
+	m_CurrentFrame = 0;
   TCollection_ExtendedString a3DName ("Visu3D");
 
   myViewer = Viewer (a3DName.ToExtString(), "", 1000.0, V3d_XposYnegZpos, Standard_True, Standard_True);
@@ -289,6 +325,7 @@ void DocumentCommon::updatePartList()
 		//TopoDS_Shape tempCurrentShape = *pCurrentShape;
 
 		Handle(AIS_Shape) pAISCurrentShape = new AIS_Shape(pCurrentShape);
+		m_AISShapeList.append(pAISCurrentShape);
 		
 		getContext()->SetColor(pAISCurrentShape, pCurrentPart->getQuantityColor(), Standard_False);
 		getContext()->SetDisplayMode(pAISCurrentShape, 1, Standard_False);
@@ -474,6 +511,43 @@ void DocumentCommon::onSelectedModel()
 	//	}
 	//}
 	// -test
+}
+
+
+void DocumentCommon::onStartAnimation()
+{
+	m_TimerID = startTimer(16);
+
+	m_CurrentFrame = 0;
+
+}
+
+void DocumentCommon::onStopAnimation()
+{
+	onKillTimer(m_TimerID);
+}
+
+
+void DocumentCommon::onKillTimer(int nID)
+{
+	m_CurrentFrame = 0;
+	killTimer(nID);
+}
+
+
+void DocumentCommon::onResetLocation()
+{
+	for (int nCurrent = 0; nCurrent < m_AISShapeList.size(); ++nCurrent)
+	{
+		Handle(AIS_Shape) ipCurrentAIS = m_AISShapeList.value(nCurrent);
+		PartModel* pCurrentPartModel = m_partModelList.at(nCurrent);
+		gp_Trsf tempTrs = pCurrentPartModel->getPartModelOriginal();
+		TopLoc_Location oCurrentLocation(tempTrs);
+
+		myContext->SetLocation(ipCurrentAIS, oCurrentLocation);
+		myContext->UpdateCurrentViewer();
+	}
+
 }
 
 void DocumentCommon::onDelete()

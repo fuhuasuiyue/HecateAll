@@ -8,6 +8,8 @@ PartModel::PartModel()
 	//m_PartShape = nullptr;
 	m_nPartID = -1;
 	m_PartColor = Quantity_Color();
+	m_PartTransform.clear();
+	m_OriginalTrs = gp_Trsf();
 }
 
 
@@ -36,6 +38,7 @@ QString PartModel::getPartName()
 void PartModel::setPartShape(TopoDS_Shape partShape)
 {
 	m_PartShape = partShape;
+	m_OriginalTrs = partShape.Location().Transformation();
 }
 
 TopoDS_Shape PartModel::getPartShape()
@@ -62,4 +65,19 @@ void PartModel::setQuantityColor(Quantity_Color oQuantityColor)
 Quantity_Color PartModel::getQuantityColor()
 {
 	return m_PartColor;
+}
+
+void PartModel::setPartModelTransform(QList<gp_Trsf> oPartTransformList)
+{
+	m_PartTransform.append(oPartTransformList);
+}
+
+QList<gp_Trsf>& PartModel::getPartModelTransform()
+{
+	return m_PartTransform;
+}
+
+gp_Trsf PartModel::getPartModelOriginal()
+{
+	return m_OriginalTrs;
 }

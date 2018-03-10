@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_ApplicationCommonWindow_t {
-    QByteArrayData data[23];
-    char stringdata0[307];
+    QByteArrayData data[25];
+    char stringdata0[343];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -53,7 +53,9 @@ QT_MOC_LITERAL(18, 234, 20), // "windowsMenuActivated"
 QT_MOC_LITERAL(19, 255, 7), // "checked"
 QT_MOC_LITERAL(20, 263, 13), // "onSetMaterial"
 QT_MOC_LITERAL(21, 277, 11), // "theMaterial"
-QT_MOC_LITERAL(22, 289, 17) // "onCreateOCCBottle"
+QT_MOC_LITERAL(22, 289, 17), // "onCreateOCCBottle"
+QT_MOC_LITERAL(23, 307, 16), // "onImportStepFile"
+QT_MOC_LITERAL(24, 324, 18) // "onMotionCalculator"
 
     },
     "ApplicationCommonWindow\0onNewDoc\0"
@@ -64,7 +66,8 @@ QT_MOC_LITERAL(22, 289, 17) // "onCreateOCCBottle"
     "onWindowActivated\0QWidget*\0w\0"
     "windowsMenuAboutToShow\0windowsMenuActivated\0"
     "checked\0onSetMaterial\0theMaterial\0"
-    "onCreateOCCBottle"
+    "onCreateOCCBottle\0onImportStepFile\0"
+    "onMotionCalculator"
 };
 #undef QT_MOC_LITERAL
 
@@ -74,7 +77,7 @@ static const uint qt_meta_data_ApplicationCommonWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      15,   14, // methods
+      17,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -82,21 +85,23 @@ static const uint qt_meta_data_ApplicationCommonWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   89,    3, 0x0a /* Public */,
-       4,    0,   90,    3, 0x0a /* Public */,
-       5,    0,   91,    3, 0x0a /* Public */,
-       6,    1,   92,    3, 0x0a /* Public */,
-       8,    0,   95,    3, 0x0a /* Public */,
-       9,    0,   96,    3, 0x0a /* Public */,
-      10,    0,   97,    3, 0x0a /* Public */,
-      11,    0,   98,    3, 0x0a /* Public */,
-      12,    0,   99,    3, 0x0a /* Public */,
-      13,    0,  100,    3, 0x0a /* Public */,
-      14,    1,  101,    3, 0x0a /* Public */,
-      17,    0,  104,    3, 0x0a /* Public */,
-      18,    1,  105,    3, 0x0a /* Public */,
-      20,    1,  108,    3, 0x0a /* Public */,
-      22,    0,  111,    3, 0x0a /* Public */,
+       1,    0,   99,    3, 0x0a /* Public */,
+       4,    0,  100,    3, 0x0a /* Public */,
+       5,    0,  101,    3, 0x0a /* Public */,
+       6,    1,  102,    3, 0x0a /* Public */,
+       8,    0,  105,    3, 0x0a /* Public */,
+       9,    0,  106,    3, 0x0a /* Public */,
+      10,    0,  107,    3, 0x0a /* Public */,
+      11,    0,  108,    3, 0x0a /* Public */,
+      12,    0,  109,    3, 0x0a /* Public */,
+      13,    0,  110,    3, 0x0a /* Public */,
+      14,    1,  111,    3, 0x0a /* Public */,
+      17,    0,  114,    3, 0x0a /* Public */,
+      18,    1,  115,    3, 0x0a /* Public */,
+      20,    1,  118,    3, 0x0a /* Public */,
+      22,    0,  121,    3, 0x0a /* Public */,
+      23,    0,  122,    3, 0x0a /* Public */,
+      24,    0,  123,    3, 0x0a /* Public */,
 
  // slots: parameters
     0x80000000 | 2,
@@ -113,6 +118,8 @@ static const uint qt_meta_data_ApplicationCommonWindow[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::Bool,   19,
     QMetaType::Void, QMetaType::Int,   21,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -140,6 +147,8 @@ void ApplicationCommonWindow::qt_static_metacall(QObject *_o, QMetaObject::Call 
         case 12: _t->windowsMenuActivated((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 13: _t->onSetMaterial((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 14: _t->onCreateOCCBottle(); break;
+        case 15: _t->onImportStepFile(); break;
+        case 16: _t->onMotionCalculator(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -188,13 +197,13 @@ int ApplicationCommonWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 15)
+        if (_id < 17)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 15;
+        _id -= 17;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 15)
+        if (_id < 17)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 15;
+        _id -= 17;
     }
     return _id;
 }

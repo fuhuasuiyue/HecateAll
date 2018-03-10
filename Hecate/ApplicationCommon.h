@@ -51,6 +51,9 @@ public slots:
 	void							onCreateOCCBottle();
 	void onImportStepFile();
 	void onMotionCalculator();
+	void onStartAnimation();
+	void onStopAnimation();
+	void onResetAnimation();
 
 protected:
 	virtual void                    resizeEvent(QResizeEvent*);
@@ -66,6 +69,7 @@ private:
 	void							createMenuFile();
 	void							createRibbon();
 	void							createGroupClipboard(Qtitan::RibbonPage* page);
+	void createGroupSimulation(Qtitan::RibbonPage* page);
 
 private:
 	int                             myNbDocuments;

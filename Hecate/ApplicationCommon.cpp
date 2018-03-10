@@ -176,7 +176,9 @@ DocumentCommon* ApplicationCommonWindow::onNewDoc()
 
 void ApplicationCommonWindow::onCloseWindow()
 {
+	exit(0);
 	stWs->activeSubWindow()->close();
+	
 }
 void ApplicationCommonWindow::onUseVBO()
 {
@@ -628,7 +630,7 @@ void ApplicationCommonWindow::createWindowPopup()
 void ApplicationCommonWindow::createMenuFile()
 {
 	QIcon iconLogo;
-	QString dir = getResourceDir() + QString("/res/");
+	QString dir = getResourceDir() + QString("/res/Home/");
 	QPixmap newIcon = QPixmap(dir + QObject::tr("largeNewFile.png"));
 	iconLogo.addPixmap(newIcon);
 	if (QAction* actionFile = ribbonBar()->addSystemButton(iconLogo, tr("&File")))
@@ -654,29 +656,34 @@ void ApplicationCommonWindow::createMenuFile()
 
 void ApplicationCommonWindow::createRibbon()
 {
+	// ribbonBar()->setQuickAccessBarPosition(RibbonBar::QABottomPosition);
 	if (Qtitan::RibbonPage* pageHome = ribbonBar()->addPage(tr("&Home")))
-	{
+	{		
 		createGroupClipboard(pageHome);
+	}
+	if (Qtitan::RibbonPage* pageSimulate = ribbonBar()->addPage(tr("&Simulation")))
+	{
+		createGroupSimulation(pageSimulate);
 	}
 	createMenuFile();
 }
 
 void ApplicationCommonWindow::createGroupClipboard(Qtitan::RibbonPage* page)
 {
-	QString dir = getResourceDir() + QString("/res/");
+	QString dir = getResourceDir() + QString("/res/Home/");
 	QPixmap groupIcon = QPixmap(dir + QObject::tr("largeNewFile.png"));
 	if (Qtitan::RibbonGroup* groupClipboard = page->addGroup(groupIcon, tr("Clipboard")))
 	{
 		groupClipboard->setOptionButtonVisible();		
 		QPixmap newIcon, helpIcon, closeIcon, makeBottleIcon, importFileIcon;
-		QPixmap motionIcon;
+		//QPixmap motionIcon;
 
 		newIcon = QPixmap(dir + QObject::tr("largeNewFile.png"));
 		helpIcon = QPixmap(dir + QObject::tr("LargeHelp.png"));
 		closeIcon = QPixmap(dir + QObject::tr("largeClose.png"));
 		makeBottleIcon = QPixmap(dir + QObject::tr("SampleImportExport.png"));
 		importFileIcon = QPixmap(dir + QObject::tr("import.png"));
-		motionIcon = QPixmap(dir + QObject::tr("Motion.png"));
+		//motionIcon = QPixmap(dir + QObject::tr("Motion.png"));
 
 		QAction * fileNewAction, *fileCloseAction, *filePrefUseVBOAction,
 			*fileQuitAction, *viewToolAction, *viewStatusAction, *helpAboutAction,
@@ -710,9 +717,43 @@ void ApplicationCommonWindow::createGroupClipboard(Qtitan::RibbonPage* page)
 		importAction = groupClipboard->addAction(importFileIcon, tr("&ImportFile"), Qt::ToolButtonTextUnderIcon);
 		connect(importAction, SIGNAL(triggered()), this, SLOT(onImportStepFile()));
 
+		//motionCalcAction = groupClipboard->addAction(motionIcon, tr("MCalc"), Qt::ToolButtonTextUnderIcon);
+		//connect(motionCalcAction, SIGNAL(triggered()), this, SLOT(onMotionCalculator()));
+
+	}
+
+
+}
+
+void ApplicationCommonWindow::createGroupSimulation(Qtitan::RibbonPage* page)
+{
+	QString dir = getResourceDir() + QString("/res/Simulation/");
+	QPixmap groupIcon = QPixmap(dir + tr("largeNewFile.png"));
+
+	if (Qtitan::RibbonGroup* groupClipboard = page->addGroup(groupIcon, tr("Simulation")))
+	{
+		groupClipboard->setOptionButtonVisible();
+		QPixmap motionIcon;
+		motionIcon = QPixmap(dir + QObject::tr("Motion.png"));
+
+		QPixmap startAniIcon, stopAniIcon, resetAniIcon;
+		startAniIcon = QPixmap(dir + tr("start.png"));
+		stopAniIcon = QPixmap(dir + tr("stop.png"));
+		resetAniIcon = QPixmap(dir + tr("reset.png"));
+		
+		QAction *motionCalcAction;
+		QAction *animationStartAction, *animationStopAction, *animationResetAction;
+
 		motionCalcAction = groupClipboard->addAction(motionIcon, tr("MCalc"), Qt::ToolButtonTextUnderIcon);
 		connect(motionCalcAction, SIGNAL(triggered()), this, SLOT(onMotionCalculator()));
 
+		animationStartAction = groupClipboard->addAction(startAniIcon, tr("Start"), Qt::ToolButtonTextUnderIcon);
+		animationStopAction = groupClipboard->addAction(stopAniIcon, tr("Stop"), Qt::ToolButtonTextUnderIcon);
+		animationResetAction = groupClipboard->addAction(resetAniIcon, tr("Reset"), Qt::ToolButtonTextUnderIcon);
+
+		connect(animationStartAction, SIGNAL(triggered()), this, SLOT(onStartAnimation()));
+		connect(animationStopAction, SIGNAL(triggered()), this, SLOT(onStopAnimation()));
+		connect(animationResetAction, SIGNAL(triggered()), this, SLOT(onResetAnimation()));
 	}
 }
 
@@ -745,5 +786,26 @@ void ApplicationCommonWindow::onMotionCalculator()
 	DocumentCommon* doc = (DocumentCommon*)(qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget())->getDocument());
 	
 	pHCMotion(doc->getPartModelList());
+}
+
+void ApplicationCommonWindow::onStartAnimation()
+{
+	QMdiArea* ws = getWorkspace();
+	DocumentCommon* doc = (DocumentCommon*)(qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget())->getDocument());
+	doc->onStartAnimation();
+}
+
+void ApplicationCommonWindow::onStopAnimation()
+{
+	QMdiArea* ws = getWorkspace();
+	DocumentCommon* doc = (DocumentCommon*)(qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget())->getDocument());
+	doc->onStopAnimation();
+}
+
+void ApplicationCommonWindow::onResetAnimation()
+{
+	QMdiArea* ws = getWorkspace();
+	DocumentCommon* doc = (DocumentCommon*)(qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget())->getDocument());
+	doc->onResetLocation();
 }
 
