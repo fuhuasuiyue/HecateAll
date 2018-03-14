@@ -35,6 +35,9 @@
 #include "BRep_Tool.hxx"
 #include "Geom_Curve.hxx"
 #include "TopoDS_Edge.hxx"
+#include "Geom_Circle.hxx"
+#include "BRepPrimAPI_MakeCylinder.hxx"
+#include "BRepPrimAPI_MakeSphere.hxx"
 
 TopoDS_Shape
 MakeBottle(const Standard_Real myWidth, const Standard_Real myHeight, const Standard_Real myThickness);
@@ -108,7 +111,8 @@ DocumentCommon::DocumentCommon(const int theIndex, ApplicationCommonWindow* app)
 : QObject( app ),
 myApp( app ),
 myIndex( theIndex ),
-myNbViews( 0 )
+myNbViews( 0 ),
+m_Project(nullptr)
 {
 	m_CurrentFrame = 0;
   TCollection_ExtendedString a3DName ("Visu3D");
@@ -119,31 +123,10 @@ myNbViews( 0 )
   myViewer->SetLightOn();
 
   myContext = new AIS_InteractiveContext (myViewer);
-  //myContext->CloseAllContexts(true);
-
-  //myContext->OpenLocalContext(true, true, false, false);
- // /* 选择模式
-	//TopAbs_COMPOUND,
-	//TopAbs_COMPSOLID,
-	//TopAbs_SOLID,
-	//TopAbs_SHELL,
-	//TopAbs_FACE,
-	//TopAbs_WIRE,
-	//TopAbs_EDGE,
-	//TopAbs_VERTEX,
-	//TopAbs_SHAPE
- // */
- // //myContext->ActivateStandardMode(TopAbs_COMPOUND);
- // //myContext->ActivateStandardMode(TopAbs_COMPSOLID);
- // //myContext->ActivateStandardMode(TopAbs_SOLID);
- // //myContext->ActivateStandardMode(TopAbs_SHELL);
- // //myContext->ActivateStandardMode(TopAbs_FACE);
- // //myContext->ActivateStandardMode(TopAbs_WIRE);
-	//myContext->ActivateStandardMode(TopAbs_EDGE);
-	//myContext->ActivateStandardMode(TopAbs_VERTEX);
- // myContext->ActivateStandardMode(TopAbs_SHAPE);
-  //myContext->OpenLocalContext();
+  
   m_partModelList.clear();
+
+  makeAixs();
 }
 
 DocumentCommon::~DocumentCommon()
@@ -163,6 +146,7 @@ MDIWindow* DocumentCommon::createNewMDIWindow()
 
 void DocumentCommon::onCreateNewView()
 {
+	m_Project = new HCProject;
   QMdiArea* ws = myApp->getWorkspace();
   MDIWindow* w = createNewMDIWindow();
   w->getView()->rotation();
@@ -260,6 +244,43 @@ void DocumentCommon::onMakeBottle()
 }
 
 
+void DocumentCommon::makeAixs()
+{
+	TopoDS_Shape originPoint = BRepPrimAPI_MakeSphere(0.2);
+
+	TopoDS_Shape XShape = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(0, 0, 0.),
+		gp_Dir(1., 0., 0.)),
+		0.2, 20.);
+	TopoDS_Shape YShape = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(0, 0, 0.),
+		gp_Dir(0., 1., 0.)),
+		0.2, 20.);
+	TopoDS_Shape ZShape = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(0, 0, 0.),
+		gp_Dir(0., 0., 1.)),
+		0.2, 20.);
+
+	Handle(AIS_Shape) iporiginPoint = new AIS_Shape(originPoint);
+	//iporiginPoint->SetHilightAttributes()
+	getContext()->SetColor(iporiginPoint, Quantity_Color(Quantity_NOC_RED), Standard_False);
+	getContext()->SetDisplayMode(iporiginPoint, 1, Standard_False);
+	getContext()->Display(iporiginPoint, Standard_False);
+
+	Handle(AIS_Shape) ipXAxis = new AIS_Shape(XShape);
+	getContext()->SetColor(ipXAxis, Quantity_Color(Quantity_NOC_RED), Standard_False);
+	getContext()->SetDisplayMode(ipXAxis, 1, Standard_False);
+	getContext()->Display(ipXAxis, Standard_False);
+
+	Handle(AIS_Shape) ipYAxis = new AIS_Shape(YShape);
+	getContext()->SetColor(ipYAxis, Quantity_Color(Quantity_NOC_GOLD), Standard_False);
+	getContext()->SetDisplayMode(ipYAxis, 1, Standard_False);
+	getContext()->Display(ipYAxis, Standard_False);
+
+	Handle(AIS_Shape) ipZAxis = new AIS_Shape(ZShape);
+	getContext()->SetColor(ipZAxis, Quantity_Color(Quantity_NOC_BLUE1), Standard_False);
+	getContext()->SetDisplayMode(ipZAxis, 1, Standard_False);
+	getContext()->Display(ipZAxis, Standard_False);
+
+}
+
 PartModel* DocumentCommon::addPartModel()
 {
 	PartModel* pAddModel = new PartModel;
@@ -330,8 +351,8 @@ void DocumentCommon::updatePartList()
 		getContext()->SetColor(pAISCurrentShape, pCurrentPart->getQuantityColor(), Standard_False);
 		getContext()->SetDisplayMode(pAISCurrentShape, 1, Standard_False);
 		getContext()->Display(pAISCurrentShape, Standard_False);
-		const Handle(AIS_InteractiveObject)& anIOAISBottle = pAISCurrentShape;
-		getContext()->SetSelected(anIOAISBottle, Standard_False);
+		//const Handle(AIS_InteractiveObject)& anIOAISBottle = pAISCurrentShape;
+		//getContext()->SetSelected(pAISCurrentShape, Standard_False);
 	}
 	QMdiArea* ws = myApp->getWorkspace();
 	MDIWindow* window = qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget());
@@ -346,6 +367,58 @@ QList<PartModel*> DocumentCommon::getPartModelList()
 {
 	return m_partModelList;
 
+}
+
+
+void DocumentCommon::setSelectType(TopAbs_ShapeEnum typeID)
+{
+	// /* 选择模式
+	//TopAbs_COMPOUND,
+	//TopAbs_COMPSOLID,
+	//TopAbs_SOLID,
+	//TopAbs_SHELL,
+	//TopAbs_FACE,
+	//TopAbs_WIRE,
+	//TopAbs_EDGE,
+	//TopAbs_VERTEX,
+	//TopAbs_SHAPE
+	// */
+	myContext->CloseAllContexts(true);
+	myContext->OpenLocalContext(true, true, false, false);
+	switch (typeID)
+	{
+	case TopAbs_COMPOUND:
+		myContext->ActivateStandardMode(TopAbs_COMPOUND);
+		break;
+	case TopAbs_COMPSOLID:
+		myContext->ActivateStandardMode(TopAbs_COMPSOLID);
+		break;
+	case TopAbs_SOLID:
+		myContext->ActivateStandardMode(TopAbs_SOLID);
+		break;
+	case TopAbs_SHELL:
+		myContext->ActivateStandardMode(TopAbs_SHELL);
+		break;
+	case TopAbs_FACE:
+		myContext->ActivateStandardMode(TopAbs_FACE);
+		break;
+	case TopAbs_WIRE:
+		myContext->ActivateStandardMode(TopAbs_WIRE);
+		break;
+	case TopAbs_EDGE:
+		myContext->ActivateStandardMode(TopAbs_EDGE);
+		break;
+	case TopAbs_VERTEX:
+		myContext->ActivateStandardMode(TopAbs_VERTEX);
+		break;
+	case TopAbs_SHAPE:
+		myContext->ActivateStandardMode(TopAbs_SHAPE);
+		break;
+	default:
+		myContext->CloseAllContexts(true);
+		break;
+	}
+	myContext->UpdateCurrentViewer();
 }
 
 void DocumentCommon::onWireframe()
@@ -472,11 +545,51 @@ void DocumentCommon::onSelectedModel()
 			qDebug() << "No AIS_Shape is selected!";
 			return;
 		}
+		//getContext()->SetColor(aSelInteractive, Quantity_Color(Quantity_NOC_RED), false);
 
 		for (myContext->InitSelected(); myContext->MoreSelected(); myContext->NextSelected())
 		{
 			const TopoDS_Shape& aSelShape = myContext->SelectedShape();
-			if (aSelShape.ShapeType() == TopAbs_VERTEX)
+			TopAbs_ShapeEnum nShapeEnum = aSelShape.ShapeType();
+			switch (nShapeEnum)
+			{
+			case TopAbs_COMPOUND:
+				break;
+			case TopAbs_COMPSOLID:
+				break;
+			case TopAbs_SOLID:
+				break;
+			case TopAbs_SHELL:
+				break;
+			case TopAbs_FACE:
+				break;
+			case TopAbs_WIRE:
+				break;
+			case TopAbs_EDGE:
+			{
+				TopoDS_Edge aSelEdge = TopoDS::Edge(myContext->SelectedShape().Located(TopLoc_Location()));
+				Standard_Real first, second;
+				Handle(Geom_Curve) aCurve = BRep_Tool::Curve(aSelEdge, first, second);
+				Handle(Standard_Type) oType = aCurve->DynamicType();
+				if (!oType.IsNull())
+				{
+					if (std::string(oType->Name()).compare(std::string("Geom_Circle")) == 0)
+					{
+						qDebug() << "Geom_Circle ";
+						Handle(Geom_Circle) ipCurrentCircle = Handle(Geom_Circle)::DownCast(aCurve);
+						gp_Ax1 aCircleAx = ipCurrentCircle->Axis();
+						qDebug() << "aCircleAx Location: " << aCircleAx.Location().X() << aCircleAx.Location().Y() << aCircleAx.Location().Z();
+
+					}
+					if (std::string(oType->Name()).compare(std::string("Geom_Line")) == 0)
+					{
+						qDebug() << "Geom_Line ";
+					}
+
+				}
+			}
+				break;
+			case TopAbs_VERTEX:
 			{
 				TopoDS_Vertex aSleVertex = TopoDS::Vertex(myContext->SelectedShape().Located(TopLoc_Location()));
 				gp_Pnt p = BRep_Tool::Pnt(aSleVertex);
@@ -485,15 +598,30 @@ void DocumentCommon::onSelectedModel()
 				qDebug() << "Vertex Tolerance: " << dTolerance;
 				//std::cout << "Vertex orientation: " << DumpOrientation(v.Orientation()) << std::endl;
 			}
-
-			if (aSelShape.ShapeType() == TopAbs_EDGE)
-			{
-				TopoDS_Edge aSelEdge = TopoDS::Edge(myContext->SelectedShape().Located(TopLoc_Location()));
-				Standard_Real first, second;
-				Handle(Geom_Curve) aCurve = BRep_Tool::Curve(aSelEdge, first, second);
-				qDebug() << "Standard_Real : (" << first << ", " << first  << ")";
-				//qDebug() << "Geom_Curve: " << dTolerance;
+				break;
+			case TopAbs_SHAPE:
+				break;
+			default:
+				break;
 			}
+			//if (aSelShape.ShapeType() == TopAbs_VERTEX)
+			//{
+			//	TopoDS_Vertex aSleVertex = TopoDS::Vertex(myContext->SelectedShape().Located(TopLoc_Location()));
+			//	gp_Pnt p = BRep_Tool::Pnt(aSleVertex);
+			//	Standard_Real dTolerance = BRep_Tool::Tolerance(aSleVertex);
+			//	qDebug() << "Vertex position: (" << p.X() << ", " << p.Y() << ", " << p.Z() << ")";
+			//	qDebug() << "Vertex Tolerance: " << dTolerance;
+			//	//std::cout << "Vertex orientation: " << DumpOrientation(v.Orientation()) << std::endl;
+			//}
+
+			//if (aSelShape.ShapeType() == TopAbs_EDGE)
+			//{
+			//	TopoDS_Edge aSelEdge = TopoDS::Edge(myContext->SelectedShape().Located(TopLoc_Location()));
+			//	Standard_Real first, second;
+			//	Handle(Geom_Curve) aCurve = BRep_Tool::Curve(aSelEdge, first, second);
+			//	qDebug() << "Standard_Real : (" << first << ", " << first  << ")";
+			//	//qDebug() << "Geom_Curve: " << dTolerance;
+			//}
 			
 		}
 	}

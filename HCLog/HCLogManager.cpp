@@ -189,7 +189,7 @@ namespace HCLOG {
 		while (offset < logInfo.length())
 		{
 			string data = logInfo.substr(offset, length);
-			offset += length;
+				offset += length;
 			google::LogMessage(m_fileName.c_str(), m_Line, m_Severity).stream() << data.c_str();
 		}
 

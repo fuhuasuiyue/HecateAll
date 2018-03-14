@@ -15,6 +15,7 @@ public:
 	int	stepSimulation(btScalar timeStep, int maxSubSteps = 1, btScalar fixedTimeStep = btScalar(1.) / btScalar(60.));
 	void startSimulation();
 	void endSimulation();
+	void addConstraint(btTypedConstraint* constraint, bool disableCollisionsBetweenLinkedBodies = false);
 	QMap<int, QList<btTransform>> getBodyTransform();
 private:
 	HCDynamicsWorld();

@@ -7,6 +7,7 @@
 #include <QMenu>
 #include <QMdiArea>
 #include <QList>
+#include <QComboBox>
 
 #include "DocumentCommon.h"
 
@@ -54,6 +55,7 @@ public slots:
 	void onStartAnimation();
 	void onStopAnimation();
 	void onResetAnimation();
+	void onSelectedID(int selectdID);
 
 protected:
 	virtual void                    resizeEvent(QResizeEvent*);
@@ -88,6 +90,7 @@ private:
 protected:
 	QList<DocumentCommon*>          myDocuments;
 	Qtitan::RibbonStyle* m_ribbonStyle;
+	QComboBox* m_SelectedID;
 
 private:
 };

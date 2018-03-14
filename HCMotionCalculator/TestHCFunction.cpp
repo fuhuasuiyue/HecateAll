@@ -11,6 +11,7 @@
 #include "TopoDS.hxx"
 #include <QDebug>
 #include "HCMotionCommon.h"
+#include "HCModelTranslator.h"
 typedef QList<PartModel*> PartList;
 
 typedef struct TriangleMesh
@@ -42,17 +43,19 @@ extern "C"
 
 			HCDynamicsWorld *pCurrentWorld = HCDynamicsWorld::getInstance();
 			pCurrentWorld->setGravity(btVector3(0, -10, 0));
-			btTriangleMesh *pTriMesh = new btTriangleMesh();
-			TriangleList* pCurrentShapeTri = buildMesh(aCurrentShape);
+			/*		btTriangleMesh *pTriMesh = new btTriangleMesh();
+					TriangleList* pCurrentShapeTri = buildMesh(aCurrentShape);
 
-			for (int nIndex = 0; nIndex < pCurrentShapeTri->size(); ++nIndex)
-			{
-				TriangleMesh aCurrentTriMesh = pCurrentShapeTri->at(nIndex);
-				pTriMesh->addTriangle(aCurrentTriMesh.vertex0, aCurrentTriMesh.vertex1, aCurrentTriMesh.vertex2);
-			}
+					for (int nIndex = 0; nIndex < pCurrentShapeTri->size(); ++nIndex)
+					{
+						TriangleMesh aCurrentTriMesh = pCurrentShapeTri->at(nIndex);
+						pTriMesh->addTriangle(aCurrentTriMesh.vertex0, aCurrentTriMesh.vertex1, aCurrentTriMesh.vertex2);
+					}*/
 
 
-			btMultimaterialTriangleMeshShape *pMultimaterialShape = new btMultimaterialTriangleMeshShape(pTriMesh, false);
+			//btMultimaterialTriangleMeshShape *pMultimaterialShape = new btMultimaterialTriangleMeshShape(pTriMesh, false);
+			//btCollisionShape* pMultimaterialShape = new btBoxShape(btVector3(100,50,30));
+			btCollisionShape* pMultimaterialShape = HCModelTranslator::createConvexShapeFromTopoDS(aCurrentShape);
 			btTransform groundTransform;
 			groundTransform.setIdentity();
 			groundTransform.setOrigin(btVector3(aTranslation.X(), aTranslation.Y(), aTranslation.Z()));
@@ -62,20 +65,23 @@ extern "C"
 			bool isDynamic = (mass != 0.f);
 
 			btVector3 localInertia(0, 0, 0);
-//			if (isDynamic)
-//				pMultimaterialShape->calculateLocalInertia(mass, localInertia);
+			if (isDynamic)
+				pMultimaterialShape->calculateLocalInertia(mass, localInertia); // 必须正确设置这个值
 			btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
 			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, pMultimaterialShape, localInertia);
-			btQuaternion orn(btVector3(0, 0, 1), 0.1);
-			rbInfo.m_startWorldTransform.setRotation(orn);
+			//btQuaternion orn(btVector3(0, 0, 1), 0.1);
+			//rbInfo.m_startWorldTransform.setRotation(orn);
 			btRigidBody* body = new btRigidBody(rbInfo);
-			body->setLinearVelocity(btVector3(1, 0, 0)); // 线性速度设置
+			btHingeConstraint* hinge = new btHingeConstraint(*body, btVector3(0, 0, 0), btVector3(0, 1, 0), true);
+			//hinge->setMotorTargetVelocity(10.);
+			
+			//body->setLinearVelocity(btVector3(1, 0, 0)); // 线性速度设置
 			body->setAngularVelocity(btVector3(0, 3, 0)); // 旋转速度设置
 			int nPartID = pCurrentModel->getPartID();
-
 			pCurrentWorld->addRigidBody(nPartID, body);
+			pCurrentWorld->addConstraint(hinge);
 			pCurrentWorld->setCountSteps(1000);
-			pCurrentWorld->stepSimulation(1.f / 60.f, 10);
+			//pCurrentWorld->stepSimulation(1.f / 60.f, 10);
 			pCurrentWorld->startSimulation();
 			pCurrentWorld->endSimulation();
 		}

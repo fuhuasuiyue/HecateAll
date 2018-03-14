@@ -32,12 +32,36 @@
     <ClCompile Include="PartModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HCPrjConstraint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HCPrjHingeConstriant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HCPrjConstraintContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HCProject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HCProjectData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PartModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HCPrjConstraint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HCPrjHingeConstriant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HCPrjConstraintContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HCProject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,6 +11,7 @@
 #include <V3d_Viewer.hxx>
 #include "PartModel.h"
 #include "AIS_Shape.hxx"
+#include "HCProject.h"
 
 class ApplicationCommonWindow;
 
@@ -29,11 +30,13 @@ public:
 	int                            countOfWindow();
 	void                           fitAll();
 	void                           onMakeBottle();
+	void makeAixs();
 	PartModel* addPartModel();
 	PartModel* getPartModel(TopoDS_Shape selectedShape);
 	int getUniquePartModelID(int partID);
 	void updatePartList();
 	QList<PartModel*> getPartModelList();
+	void setSelectType(TopAbs_ShapeEnum typeID);
 	
 protected:
 	virtual MDIWindow* createNewMDIWindow();
@@ -77,6 +80,7 @@ protected:
 	Handle(AIS_InteractiveContext) myContext;
 	int                            myIndex;
 	int                            myNbViews;
+	HCProject *m_Project;
 	QList<PartModel*> m_partModelList;
 	QList<Handle(AIS_Shape)> m_AISShapeList;
 	int m_TimerID;

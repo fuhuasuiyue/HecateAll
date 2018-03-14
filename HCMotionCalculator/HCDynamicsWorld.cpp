@@ -20,6 +20,7 @@ HCDynamicsWorld::HCDynamicsWorld()
 
 void HCDynamicsWorld::initDW()
 {
+	
 	m_CollisionConfiguration = new btDefaultCollisionConfiguration;
 
 	m_Dispatcher = new btCollisionDispatcher(m_CollisionConfiguration);
@@ -83,7 +84,8 @@ void HCDynamicsWorld::startSimulation()
 	
 	for (int i = 0; i < m_nCountStep; i++)
 	{
-		stepSimulation(m_TimeStep, m_MaxSubSteps, m_FixedTimeStep);
+		//stepSimulation(m_TimeStep, m_MaxSubSteps, m_FixedTimeStep);
+		m_DynamicsWorld->stepSimulation(1 / 60.f, 10);
 
 		//print positions of all objects
 		QMap<int, btRigidBody*>::iterator iter = m_BodyMap.begin();
@@ -144,6 +146,11 @@ void HCDynamicsWorld::endSimulation()
 		m_DynamicsWorld->removeCollisionObject(obj);
 		delete obj;
 	}
+}
+
+void HCDynamicsWorld::addConstraint(btTypedConstraint* constraint, bool disableCollisionsBetweenLinkedBodies /*= false*/)
+{
+	m_DynamicsWorld->addConstraint(constraint, disableCollisionsBetweenLinkedBodies);
 }
 
 QMap<int, QList<btTransform>> HCDynamicsWorld::getBodyTransform()

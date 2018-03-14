@@ -28,7 +28,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;HCMOTIONCALCULATOR_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;HCMOTIONCALCULATOR_LIB;BT_USE_DOUBLE_PRECISION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWidgets;$(BULLET_PHYSICS_INCLUDE);$(SolutionDir)Hecate;$(OCC72X86_INCLUDE);$(SolutionDir)HCProjectData;$(SolutionDir)HCLog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MultiThreaded</RuntimeLibrary>
@@ -89,12 +89,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="HCDynamicsWorld.cpp" />
+    <ClCompile Include="HCModelTranslator.cpp" />
     <ClCompile Include="HCMotionCalculator.cpp" />
     <ClCompile Include="HCMotionCommon.cpp" />
     <ClCompile Include="TestHCFunction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HCDynamicsWorld.h" />
+    <ClInclude Include="HCModelTranslator.h" />
     <ClInclude Include="HCMotionCalculator.h" />
     <ClInclude Include="hcmotioncalculator_global.h" />
     <ClInclude Include="HCMotionCommon.h" />

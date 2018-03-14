@@ -672,7 +672,7 @@ void ApplicationCommonWindow::createGroupClipboard(Qtitan::RibbonPage* page)
 {
 	QString dir = getResourceDir() + QString("/res/Home/");
 	QPixmap groupIcon = QPixmap(dir + QObject::tr("largeNewFile.png"));
-	if (Qtitan::RibbonGroup* groupClipboard = page->addGroup(groupIcon, tr("Clipboard")))
+	if (Qtitan::RibbonGroup* groupClipboard = page->addGroup(groupIcon, tr("Standard")))
 	{
 		groupClipboard->setOptionButtonVisible();		
 		QPixmap newIcon, helpIcon, closeIcon, makeBottleIcon, importFileIcon;
@@ -720,6 +720,34 @@ void ApplicationCommonWindow::createGroupClipboard(Qtitan::RibbonPage* page)
 		//motionCalcAction = groupClipboard->addAction(motionIcon, tr("MCalc"), Qt::ToolButtonTextUnderIcon);
 		//connect(motionCalcAction, SIGNAL(triggered()), this, SLOT(onMotionCalculator()));
 
+	}
+
+	QPixmap selectedIcon = QPixmap(dir + tr("largeNewFile.png"));
+	if (Qtitan::RibbonGroup* pSelectedBoard = page->addGroup(selectedIcon, tr("Selected")))
+	{
+		pSelectedBoard->setOptionButtonVisible();
+		m_SelectedID = new QComboBox(pSelectedBoard);
+		//TopAbs_COMPOUND,
+		//TopAbs_COMPSOLID,
+		//TopAbs_SOLID,
+		//TopAbs_SHELL,
+		//TopAbs_FACE,
+		//TopAbs_WIRE,
+		//TopAbs_EDGE,
+		//TopAbs_VERTEX,
+		//TopAbs_SHAPE
+		m_SelectedID->addItem("COMPOUND", QVariant(TopAbs_COMPOUND));
+		m_SelectedID->addItem("COMPSOLID", QVariant(TopAbs_COMPSOLID));
+		m_SelectedID->addItem("SOLID", QVariant(TopAbs_SOLID));
+		m_SelectedID->addItem("SHELL", QVariant(TopAbs_SHELL));
+		m_SelectedID->addItem("FACE", QVariant(TopAbs_FACE));
+		m_SelectedID->addItem("WIRE", QVariant(TopAbs_WIRE));
+		m_SelectedID->addItem("EDGE", QVariant(TopAbs_EDGE));
+		m_SelectedID->addItem("VERTEX", QVariant(TopAbs_VERTEX));
+		m_SelectedID->addItem("SHAPE", QVariant(TopAbs_SHAPE));
+		m_SelectedID->setMaximumWidth(130);
+		pSelectedBoard->addWidget(m_SelectedID);
+		connect(m_SelectedID, SIGNAL(currentIndexChanged(int)), this, SLOT(onSelectedID(int)));
 	}
 
 
@@ -807,5 +835,15 @@ void ApplicationCommonWindow::onResetAnimation()
 	QMdiArea* ws = getWorkspace();
 	DocumentCommon* doc = (DocumentCommon*)(qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget())->getDocument());
 	doc->onResetLocation();
+}
+
+void ApplicationCommonWindow::onSelectedID(int selectdID)
+{
+	QMdiArea* ws = getWorkspace();
+	DocumentCommon* doc = (DocumentCommon*)(qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget())->getDocument());
+	int nCurrentType = m_SelectedID->currentData().toInt();
+
+	doc->setSelectType((TopAbs_ShapeEnum)nCurrentType);
+
 }
 

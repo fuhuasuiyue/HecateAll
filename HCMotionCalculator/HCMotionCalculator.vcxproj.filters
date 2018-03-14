@@ -38,6 +38,9 @@
     <ClCompile Include="HCMotionCommon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HCModelTranslator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HCMotionCalculator.h">
@@ -47,6 +50,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HCMotionCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HCModelTranslator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
