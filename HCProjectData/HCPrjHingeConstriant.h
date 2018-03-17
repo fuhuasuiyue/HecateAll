@@ -1,8 +1,11 @@
 #pragma once
 #include "HCPrjConstraint.h"
 #include "gp_Ax1.hxx"
-class HCPrjHingeConstraint : public HCPrjConstraint
+
+
+class HCPROJECTDATA_EXPORT HCPrjHingeConstraint : public HCPrjConstraint
 {
+	CONSTRAINTDEFSUBCLASS(HCPrjHingeConstraint)
 public:
 	HCPrjHingeConstraint();
 	HCPrjHingeConstraint(PartModel* pModelA, PartModel* pModelB, gp_Pnt pivotInA, gp_Vec axis);
@@ -20,5 +23,7 @@ private:
 	gp_Pnt m_PivotB;
 	gp_Vec m_AxisInA;
 	gp_Vec m_AxisInB;
+
+	
 };
 

@@ -105,7 +105,7 @@ void View::init()
   Quantity_Color secondColor(0.4156, 0.541, 0.694, Quantity_TOC_RGB);
   myView->SetBgGradientColors(firstColor, secondColor, Aspect_GFM_VER);
   myView->MustBeResized();
-
+  myView->TriedronDisplay(Aspect_TOTP_LEFT_LOWER, Quantity_NOC_GOLD, 0.1, V3d_ZBUFFER);
   if (myIsRaytracing)
     myView->ChangeRenderingParams().Method = Graphic3d_RM_RAYTRACING;
 }

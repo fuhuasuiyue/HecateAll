@@ -126,7 +126,7 @@ m_Project(nullptr)
   
   m_partModelList.clear();
 
-  makeAixs();
+  //makeAixs();
 }
 
 DocumentCommon::~DocumentCommon()

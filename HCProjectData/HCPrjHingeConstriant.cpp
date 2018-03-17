@@ -1,6 +1,7 @@
 #include "HCPrjHingeConstriant.h"
 
 
+CONSTRAINTIMESUBCLASS(HCPrjHingeConstraint, CT_Hinge)
 
 HCPrjHingeConstraint::HCPrjHingeConstraint()
 	:HCPrjConstraint()
