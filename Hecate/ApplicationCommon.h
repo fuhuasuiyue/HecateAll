@@ -57,6 +57,9 @@ public slots:
 	void onResetAnimation();
 	void onSelectedID(int selectdID);
 
+	// setConstraint
+	void onSetHingeConstraint();
+
 protected:
 	virtual void                    resizeEvent(QResizeEvent*);
 	bool                            isDocument();

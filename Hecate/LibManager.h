@@ -3,9 +3,11 @@
 #include <QObject>
 #include <QList>
 #include "PartModel.h"
+#include "HCProject.h"
 
 typedef QList<PartModel*> PartList;
 typedef void(*HCMotionCalc)(PartList calcList);
+typedef void(*HCCalculator)(HCProject* pProject);
 
 class LibManager : public QObject
 {
@@ -15,4 +17,5 @@ public:
 	LibManager(QObject *parent);
 	~LibManager();
 	static HCMotionCalc loadHCMotionCalc();
+	static HCCalculator loadHCCalculator();
 };

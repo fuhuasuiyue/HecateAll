@@ -40,8 +40,10 @@ public:
 public:
 	HCPrjConstraint();
 	virtual ~HCPrjConstraint();
-	const virtual PartModel* getPartModelA();
-	const virtual PartModel* getPartModelB();
+	virtual PartModel* getPartModelA();
+	virtual PartModel* getPartModelB();
+	virtual void setPartModelA(PartModel* partA);
+	virtual void setPartModelB(PartModel* partB);
 	virtual ConstraintType getConstraintType();
 protected:	
 	QString m_ConstraintName;

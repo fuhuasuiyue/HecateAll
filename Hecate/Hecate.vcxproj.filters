@@ -133,6 +133,21 @@
     <ClCompile Include="LibManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_HCGUIHinge.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_HCGUIHinge.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="HCGUIHinge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextCodeConvert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ApplicationCommon.h">
@@ -162,12 +177,27 @@
     <CustomBuild Include="LibManager.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="HCGUIHinge.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="HCGUIHinge.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OcctWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImportOCAF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_HCGUIHinge.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextCodeConvert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

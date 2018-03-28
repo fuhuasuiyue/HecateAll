@@ -41,3 +41,43 @@ HCPrjHingeConstraint::HCPrjHingeConstraint(PartModel* pModelA, PartModel* pModel
 HCPrjHingeConstraint::~HCPrjHingeConstraint()
 {
 }
+
+void HCPrjHingeConstraint::setPivotA(gp_Pnt pivotA)
+{
+	m_PivotA = pivotA;
+}
+
+gp_Pnt HCPrjHingeConstraint::getPivotA()
+{
+	return m_PivotA;
+}
+
+void HCPrjHingeConstraint::setPivotB(gp_Pnt pivotB)
+{
+	m_PivotB = pivotB;
+}
+
+gp_Pnt HCPrjHingeConstraint::getPivotB()
+{
+	return m_PivotB;
+}
+
+void HCPrjHingeConstraint::setAxisA(gp_Vec axisA)
+{
+	m_AxisInA = axisA;
+}
+
+gp_Vec HCPrjHingeConstraint::getAxisA()
+{
+	return m_AxisInA;
+}
+
+void HCPrjHingeConstraint::setAxisB(gp_Vec axisB)
+{
+	m_AxisInB = axisB;
+}
+
+gp_Vec HCPrjHingeConstraint::getAxisB()
+{
+	return m_AxisInB;
+}

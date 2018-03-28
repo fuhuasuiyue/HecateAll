@@ -8,6 +8,7 @@ public:
 	HCProject();
 	~HCProject();
 	QList<PartModel*> getPartModelList();
+	PartModel* addPartModel();
 	void setPartModelList(QList<PartModel*> listPart);
 	HCPrjConstraintContainer* getConstraintContainer();
 	void setConstraintContainer(HCPrjConstraintContainer* container);

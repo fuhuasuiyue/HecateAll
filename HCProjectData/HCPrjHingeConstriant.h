@@ -18,6 +18,15 @@ public:
 
 	//btHingeConstraint(btRigidBody& rbA, const btTransform& rbAFrame, bool useReferenceFrameA = false);
 	~HCPrjHingeConstraint();
+	void setPivotA(gp_Pnt pivotA);
+	gp_Pnt getPivotA();
+	void setPivotB(gp_Pnt pivotB);
+	gp_Pnt getPivotB();
+	void setAxisA(gp_Vec axisA);
+	gp_Vec getAxisA();
+	void setAxisB(gp_Vec axisB);
+	gp_Vec getAxisB();
+
 private:
 	gp_Pnt m_PivotA;
 	gp_Pnt m_PivotB;

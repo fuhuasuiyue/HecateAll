@@ -5,6 +5,8 @@
 #include "lzwmodeltree.h"
 #include "PartModel.h"
 #include "PartPropertyForm.h"
+#include "HCGUIHinge.h"
+//#include "HCGUIHinge.h"
 
 class DocumentCommon;
 class View;
@@ -24,6 +26,7 @@ public:
   View*						getView();
   void setModelTree(QList<PartModel*> partModelList);
 
+
 signals:
   void                       selectionChanged();
   void                       message(const QString&, int );
@@ -33,6 +36,7 @@ public slots:
   void                       closeEvent(QCloseEvent* e);        
   void                       onWindowActivated ();
   void                       dump();
+  void onHingeConstraint();
 
 
 protected:
@@ -45,6 +49,9 @@ protected:
   View*                      myView;
   lzwModelTree *m_Modeltree;
   PartPropertyForm* m_PartPropertyForm;
+  HCGUIHinge *m_GUIHinge;
+  TopoDS_Shape m_selectedShape;
+  //HCGUIHinge* m_GUIHinge;
 };
 
 #endif

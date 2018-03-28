@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MDIWindow_t {
-    QByteArrayData data[12];
-    char stringdata0[118];
+    QByteArrayData data[13];
+    char stringdata0[136];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -42,13 +42,14 @@ QT_MOC_LITERAL(7, 69, 10), // "closeEvent"
 QT_MOC_LITERAL(8, 80, 12), // "QCloseEvent*"
 QT_MOC_LITERAL(9, 93, 1), // "e"
 QT_MOC_LITERAL(10, 95, 17), // "onWindowActivated"
-QT_MOC_LITERAL(11, 113, 4) // "dump"
+QT_MOC_LITERAL(11, 113, 4), // "dump"
+QT_MOC_LITERAL(12, 118, 17) // "onHingeConstraint"
 
     },
     "MDIWindow\0selectionChanged\0\0message\0"
     "sendCloseView\0MDIWindow*\0theView\0"
     "closeEvent\0QCloseEvent*\0e\0onWindowActivated\0"
-    "dump"
+    "dump\0onHingeConstraint"
 };
 #undef QT_MOC_LITERAL
 
@@ -58,7 +59,7 @@ static const uint qt_meta_data_MDIWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -66,14 +67,15 @@ static const uint qt_meta_data_MDIWindow[] = {
        3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   44,    2, 0x06 /* Public */,
-       3,    2,   45,    2, 0x06 /* Public */,
-       4,    1,   50,    2, 0x06 /* Public */,
+       1,    0,   49,    2, 0x06 /* Public */,
+       3,    2,   50,    2, 0x06 /* Public */,
+       4,    1,   55,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       7,    1,   53,    2, 0x0a /* Public */,
-      10,    0,   56,    2, 0x0a /* Public */,
-      11,    0,   57,    2, 0x0a /* Public */,
+       7,    1,   58,    2, 0x0a /* Public */,
+      10,    0,   61,    2, 0x0a /* Public */,
+      11,    0,   62,    2, 0x0a /* Public */,
+      12,    0,   63,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -82,6 +84,7 @@ static const uint qt_meta_data_MDIWindow[] = {
 
  // slots: parameters
     QMetaType::Void, 0x80000000 | 8,    9,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -100,6 +103,7 @@ void MDIWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 3: _t->closeEvent((*reinterpret_cast< QCloseEvent*(*)>(_a[1]))); break;
         case 4: _t->onWindowActivated(); break;
         case 5: _t->dump(); break;
+        case 6: _t->onHingeConstraint(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -165,13 +169,13 @@ int MDIWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }

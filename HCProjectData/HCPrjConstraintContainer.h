@@ -8,7 +8,7 @@ class HCPROJECTDATA_EXPORT HCPrjConstraintContainer
 public:
 	HCPrjConstraintContainer();
 	~HCPrjConstraintContainer();
-	QVector<HCPrjConstraint> m_ConstraintContainer;
+	QVector<HCPrjConstraint*> m_ConstraintContainer;
 protected:
 	
 

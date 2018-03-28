@@ -15,12 +15,14 @@
 #include <QMainWindow> 
 #include <QVBoxLayout>
 #include <QDockWidget>
+#include "HCGUIHinge.h"
 
 MDIWindow::MDIWindow(View* aView,
                      DocumentCommon* aDocument, 
                      QWidget* parent, 
                      Qt::WindowFlags wflags )
-: QMainWindow( parent, wflags )
+: QMainWindow( parent, wflags ),
+m_GUIHinge(new HCGUIHinge(this))
 {
   myView = aView;
   myDocument = aDocument;
@@ -28,7 +30,8 @@ MDIWindow::MDIWindow(View* aView,
 }
 
 MDIWindow::MDIWindow( DocumentCommon* aDocument, QWidget* parent, Qt::WindowFlags wflags)
-: QMainWindow( parent, wflags )
+	: QMainWindow(parent, wflags),
+	m_GUIHinge(new HCGUIHinge(this))
 {
   QFrame *vb = new QFrame( this );
   QVBoxLayout *layout = new QVBoxLayout( vb );
@@ -175,6 +178,13 @@ void MDIWindow::dump()
   }
 }
 
+
+void MDIWindow::onHingeConstraint()
+{
+	m_GUIHinge->show();
+	
+	
+}
 
 void MDIWindow::setModelTree(QList<PartModel*> partModelList)
 {

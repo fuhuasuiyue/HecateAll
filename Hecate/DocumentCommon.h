@@ -31,13 +31,14 @@ public:
 	void                           fitAll();
 	void                           onMakeBottle();
 	void makeAixs();
-	PartModel* addPartModel();
-	PartModel* getPartModel(TopoDS_Shape selectedShape);
-	int getUniquePartModelID(int partID);
 	void updatePartList();
+	HCProject* getProject();
 	QList<PartModel*> getPartModelList();
 	void setSelectType(TopAbs_ShapeEnum typeID);
-	
+	TopAbs_ShapeEnum getSelectType();
+	QString ANSIFileConvertUtf8(QString fileName);
+	TopoDS_Shape &getSelectShape();
+
 protected:
 	virtual MDIWindow* createNewMDIWindow();
 
@@ -81,10 +82,12 @@ protected:
 	int                            myIndex;
 	int                            myNbViews;
 	HCProject *m_Project;
-	QList<PartModel*> m_partModelList;
+	//QList<PartModel*> m_partModelList;
 	QList<Handle(AIS_Shape)> m_AISShapeList;
 	int m_TimerID;
 	int m_CurrentFrame;
+	TopAbs_ShapeEnum m_SelectEnum;
+	TopoDS_Shape m_selectedShape;
 };
 
 #endif

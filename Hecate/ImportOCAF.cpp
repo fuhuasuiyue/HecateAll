@@ -29,7 +29,11 @@
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <APIHeaderSection_MakeHeader.hxx>
+#include <Resource_Unicode.hxx>
 #include "PartModel.h"
+#include <QDebug>
+#include <QTextCodec> 
+#include "TextCodeConvert.h"
 
 
 
@@ -63,8 +67,32 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, 
 	if (label.FindAttribute(TDataStd_Name::GetID(), name)) {
 		TCollection_ExtendedString extstr = name->Get();
 		char* str = new char[extstr.LengthOfCString() + 1];
-		extstr.ToUTF8CString(str);
-		part_name = str;
+		//Standard_Utf8Char* utf8str = new Standard_Utf8Char[extstr.LengthOfCString() + 1];
+		// test
+		//bool isASCStr = extstr.IsAscii();
+		//if (!isASCStr)
+		//{
+		//	const Standard_WideChar* wChar = extstr.ToWideString();
+		//	//extstr.ToUTF8CString(str);
+		//	str = TextCodeConvert::UnicodeToUTF8(wChar);
+		//	part_name = str;
+		//	//part_name = TextCodeConvert::GBKToUTF8(part_name);
+		//	//int nExtCharSize = extstr.Length();
+		//	//int nCharSize = extstr.LengthOfCString();
+		//	//for (int nCurExtPos = 1; nCurExtPos <= nExtCharSize; ++nCurExtPos)
+		//	//{
+		//	//	Standard_ExtCharacter extChar = extstr.Value(nCurExtPos);
+		//	//	Standard_Character stdChar = ToCharacter(extChar);
+		//	//	nCharSize++;
+		//	//}
+		//}
+		//else
+		//{
+			//extstr.ToUTF8CString(str);
+			//part_name = str;
+		//}
+			extstr.ToUTF8CString(str);
+			part_name = str;
 		delete[] str;
 		if (part_name.empty()) {
 			part_name = defaultname;
@@ -91,10 +119,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, 
 			part_loc = hLoc->Get();
 	}
 
-	std::string asm_name = assembly;
-	if (aShapeTool->IsAssembly(label)) {
-		asm_name = part_name;
-	}
+	std::string asm_name = part_name;
 
 	TDF_Label ref;
 	if (aShapeTool->IsReference(label) && aShapeTool->GetReferredShape(label, ref)) {
@@ -144,7 +169,8 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
 void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& loc, const std::string& name)
 {
 	TopoDS_Shape pAshape = aShape;
-	PartModel* part = doc->addPartModel();
+	//PartModel* part = doc->addPartModel();
+	PartModel* part = doc->getProject()->addPartModel();
 	if (!loc.IsIdentity())
 		part->setPartShape(pAshape.Moved(loc));
 	else

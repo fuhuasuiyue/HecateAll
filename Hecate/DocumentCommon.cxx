@@ -75,11 +75,12 @@ Handle(V3d_Viewer) DocumentCommon::Viewer (const Standard_ExtString ,
 
 void DocumentCommon::timerEvent(QTimerEvent *event)
 {
+	QList<PartModel*> listPart = m_Project->getPartModelList();
 	//m_partModelList;
 	if (!m_AISShapeList.empty())
 	{
 		// 先获得帧数，按照帧遍历, 在按照每一帧中Model的位置更新
-		int nTrsSize = m_partModelList.at(0)->getPartModelTransform().size();
+		int nTrsSize = listPart.at(0)->getPartModelTransform().size();
 		if (nTrsSize==0)
 		{			
 			return;
@@ -88,7 +89,7 @@ void DocumentCommon::timerEvent(QTimerEvent *event)
 		for (int nCurrent = 0; nCurrent < m_AISShapeList.size(); ++nCurrent)
 		{
 			Handle(AIS_Shape) ipCurrentAIS = m_AISShapeList.value(nCurrent);
-			PartModel* pCurrentPartModel = m_partModelList.at(nCurrent);
+			PartModel* pCurrentPartModel = listPart.at(nCurrent);
 			gp_Trsf tempTrs = pCurrentPartModel->getPartModelTransform().at(m_CurrentFrame);
 			TopLoc_Location oCurrentLocation(tempTrs);
 
@@ -123,10 +124,11 @@ m_Project(nullptr)
   myViewer->SetLightOn();
 
   myContext = new AIS_InteractiveContext (myViewer);
-  
-  m_partModelList.clear();
+  //setSelectType(TopAbs_SHAPE);
+  m_SelectEnum = TopAbs_SHAPE;
+  //m_partModelList.clear();
 
-  //makeAixs();
+  makeAixs();
 }
 
 DocumentCommon::~DocumentCommon()
@@ -281,69 +283,17 @@ void DocumentCommon::makeAixs()
 
 }
 
-PartModel* DocumentCommon::addPartModel()
-{
-	PartModel* pAddModel = new PartModel;
-	int nPartID = 0;
-	if (!m_partModelList.isEmpty())
-	{
-		nPartID = getUniquePartModelID(nPartID);
-	}
-	pAddModel->setPartID(nPartID);
-	m_partModelList.append(pAddModel);
-	return pAddModel;
-
-}
-
-
-PartModel* DocumentCommon::getPartModel(TopoDS_Shape selectedShape)
-{
-	if (m_partModelList.isEmpty())
-	{
-		return nullptr;
-	}
-	for (int nCurrentNum = 0; nCurrentNum<m_partModelList.size(); ++nCurrentNum)
-	{
-		PartModel* pModel = m_partModelList.at(nCurrentNum);
-		if (pModel->getPartShape().IsEqual(selectedShape))
-		{
-			return pModel;
-		}
-	}
-	return nullptr;
-}
-
-int DocumentCommon::getUniquePartModelID(int partID)
-{
-	if (m_partModelList.isEmpty())
-	{
-		return 0;
-	}
-	QList<PartModel*>::iterator itPart = m_partModelList.begin();
-	for (;itPart != m_partModelList.end(); ++itPart)
-	{
-		if ((*itPart)->getPartID() == partID)
-		{
-			partID++;
-		}
-	}
-
-	return partID;
-
-}
-
-
 void DocumentCommon::updatePartList()
 {
-	if (m_partModelList.isEmpty())
+	QList<PartModel*> listCurrent = m_Project->getPartModelList();
+	if (listCurrent.isEmpty())
 	{
 		return;
 	}
-	for (int nCurrent = 0; nCurrent < m_partModelList.size(); ++nCurrent)
+	for (int nCurrent = 0; nCurrent < listCurrent.size(); ++nCurrent)
 	{
-		PartModel* pCurrentPart = m_partModelList.value(nCurrent);
+		PartModel* pCurrentPart = listCurrent.value(nCurrent);
 		TopoDS_Shape pCurrentShape = pCurrentPart->getPartShape();
-		//TopoDS_Shape tempCurrentShape = *pCurrentShape;
 
 		Handle(AIS_Shape) pAISCurrentShape = new AIS_Shape(pCurrentShape);
 		m_AISShapeList.append(pAISCurrentShape);
@@ -351,21 +301,24 @@ void DocumentCommon::updatePartList()
 		getContext()->SetColor(pAISCurrentShape, pCurrentPart->getQuantityColor(), Standard_False);
 		getContext()->SetDisplayMode(pAISCurrentShape, 1, Standard_False);
 		getContext()->Display(pAISCurrentShape, Standard_False);
-		//const Handle(AIS_InteractiveObject)& anIOAISBottle = pAISCurrentShape;
-		//getContext()->SetSelected(pAISCurrentShape, Standard_False);
 	}
 	QMdiArea* ws = myApp->getWorkspace();
 	MDIWindow* window = qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget());
-	window->setModelTree(m_partModelList);
+	window->setModelTree(listCurrent);
 	emit selectionChanged();
 	fitAll();
 
 }
 
 
+HCProject* DocumentCommon::getProject()
+{
+	return m_Project;
+}
+
 QList<PartModel*> DocumentCommon::getPartModelList()
 {
-	return m_partModelList;
+	return m_Project->getPartModelList();
 
 }
 
@@ -383,6 +336,7 @@ void DocumentCommon::setSelectType(TopAbs_ShapeEnum typeID)
 	//TopAbs_VERTEX,
 	//TopAbs_SHAPE
 	// */
+	m_SelectEnum = typeID;
 	myContext->CloseAllContexts(true);
 	myContext->OpenLocalContext(true, true, false, false);
 	switch (typeID)
@@ -419,6 +373,52 @@ void DocumentCommon::setSelectType(TopAbs_ShapeEnum typeID)
 		break;
 	}
 	myContext->UpdateCurrentViewer();
+}
+
+TopAbs_ShapeEnum DocumentCommon::getSelectType()
+{
+	return m_SelectEnum;
+}
+
+// 把ANSI的文件转换为UTF-8格式
+QString DocumentCommon::ANSIFileConvertUtf8(QString fileName)
+{
+	QFile oFileOpen(fileName);
+	if (!oFileOpen.exists())
+	{
+		return QString("");
+	}
+	oFileOpen.open(QIODevice::ReadWrite);
+	QTextStream strTextStream(&oFileOpen);
+	QString strText = strTextStream.readAll();
+
+	QFileInfo inputFileInfo(fileName);
+	QString strOutFilePath = inputFileInfo.absolutePath() + QString("/");
+	QString strOutFileBase = inputFileInfo.baseName() + QString("_ToUtf8.STEP");
+	QString strOutFileName = strOutFilePath + strOutFileBase;
+
+	QFile outPutFile(strOutFileName);
+	if (outPutFile.exists())
+	{
+		return strOutFileName;
+	}
+
+	if (outPutFile.open(QIODevice::ReadWrite | QIODevice::Text))
+	{
+		QTextStream outTextStream(&outPutFile);
+		outTextStream.setCodec("UTF-8");
+		outTextStream << strText;
+		outTextStream.flush();
+		outPutFile.close();
+		return strOutFileName;
+	}
+	return QString("");
+}
+
+TopoDS_Shape & DocumentCommon::getSelectShape()
+{
+	// TODO: 在此处插入 return 语句
+	return m_selectedShape;
 }
 
 void DocumentCommon::onWireframe()
@@ -502,6 +502,12 @@ void DocumentCommon::onImportSTPFile()
 	MDIWindow* window = qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget());
 
 	QString openFileName = QFileDialog::getOpenFileName(window, "ImportFile", "", "Import Files (*.stp *.step *.igs *iges)");
+	if (openFileName.isEmpty())
+	{
+		return;
+	}
+	// 增加文件转换
+	openFileName = ANSIFileConvertUtf8(openFileName);
 	QFileInfo openFileInfo(openFileName);
 	ws->setActiveSubWindow(pTempMdiSubWin);
 
@@ -515,8 +521,10 @@ void DocumentCommon::onImportSTPFile()
 		aReader.SetColorMode(true);
 		aReader.SetNameMode(true);
 		aReader.SetLayerMode(true);
-		if (aReader.ReadFile((const char*)openFileName.toStdString().c_str()) != IFSelect_RetDone) {
+		if (aReader.ReadFile((const char*)(openFileName.toStdString().c_str())) != IFSelect_RetDone) {
 			//PyErr_SetString(Base::BaseExceptionFreeCADError, "cannot read STEP file");
+			QApplication::restoreOverrideCursor();
+			QMessageBox::warning(window, QString(tr("Warning")), QString(tr("OpenFile is failed!")));
 			return ;
 		}
 
@@ -550,6 +558,7 @@ void DocumentCommon::onSelectedModel()
 		for (myContext->InitSelected(); myContext->MoreSelected(); myContext->NextSelected())
 		{
 			const TopoDS_Shape& aSelShape = myContext->SelectedShape();
+			m_selectedShape = aSelShape;
 			TopAbs_ShapeEnum nShapeEnum = aSelShape.ShapeType();
 			switch (nShapeEnum)
 			{
@@ -604,41 +613,13 @@ void DocumentCommon::onSelectedModel()
 			default:
 				break;
 			}
-			//if (aSelShape.ShapeType() == TopAbs_VERTEX)
-			//{
-			//	TopoDS_Vertex aSleVertex = TopoDS::Vertex(myContext->SelectedShape().Located(TopLoc_Location()));
-			//	gp_Pnt p = BRep_Tool::Pnt(aSleVertex);
-			//	Standard_Real dTolerance = BRep_Tool::Tolerance(aSleVertex);
-			//	qDebug() << "Vertex position: (" << p.X() << ", " << p.Y() << ", " << p.Z() << ")";
-			//	qDebug() << "Vertex Tolerance: " << dTolerance;
-			//	//std::cout << "Vertex orientation: " << DumpOrientation(v.Orientation()) << std::endl;
-			//}
-
-			//if (aSelShape.ShapeType() == TopAbs_EDGE)
-			//{
-			//	TopoDS_Edge aSelEdge = TopoDS::Edge(myContext->SelectedShape().Located(TopLoc_Location()));
-			//	Standard_Real first, second;
-			//	Handle(Geom_Curve) aCurve = BRep_Tool::Curve(aSelEdge, first, second);
-			//	qDebug() << "Standard_Real : (" << first << ", " << first  << ")";
-			//	//qDebug() << "Geom_Curve: " << dTolerance;
-			//}
 			
 		}
 	}
-	//Handle(AIS_InteractiveObject) Current = myContext->SelectedInteractive();
-	//// test
-	//Handle(AIS_Shape) pCurrentShape = dynamic_cast<AIS_Shape*>(Current.get());
-	//if (!pCurrentShape.IsNull())
-	//{
-	//	TopoDS_Shape pDSShape = pCurrentShape->Shape();
-	//	PartModel* pCurrentModel = getPartModel(pDSShape);
-	//	if (pCurrentModel != nullptr)
-	//	{
-	//		qDebug() << pCurrentModel->getPartName();
-	//		qDebug() << pCurrentModel->getPartID();
-	//	}
-	//}
-	// -test
+	else
+	{
+		m_selectedShape = TopoDS_Shape();
+	}	
 }
 
 
@@ -665,10 +646,11 @@ void DocumentCommon::onKillTimer(int nID)
 
 void DocumentCommon::onResetLocation()
 {
+	QList<PartModel*> listCurrent = m_Project->getPartModelList();
 	for (int nCurrent = 0; nCurrent < m_AISShapeList.size(); ++nCurrent)
 	{
 		Handle(AIS_Shape) ipCurrentAIS = m_AISShapeList.value(nCurrent);
-		PartModel* pCurrentPartModel = m_partModelList.at(nCurrent);
+		PartModel* pCurrentPartModel = listCurrent.at(nCurrent);
 		gp_Trsf tempTrs = pCurrentPartModel->getPartModelOriginal();
 		TopLoc_Location oCurrentLocation(tempTrs);
 

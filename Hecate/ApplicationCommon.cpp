@@ -24,6 +24,7 @@
 #include "Standard_Handle.hxx"
 #include <AIS_InteractiveObject.hxx>
 #include "LibManager.h"
+//#include "HCGUIHinge.h"
 static ApplicationCommonWindow* stApp = 0;
 static QMdiArea* stWs = 0;
 
@@ -163,7 +164,7 @@ DocumentCommon* ApplicationCommonWindow::onNewDoc()
 
 	connect(aDoc, SIGNAL(sendCloseDocument(DocumentCommon*)),
 		this, SLOT(onCloseDocument(DocumentCommon*)));
-	connect(stWs, SIGNAL(windowActivated(QWidget*)),
+	connect(stWs, SIGNAL(subWindowActivated(QWidget*)),
 		this, SLOT(onWindowActivated(QWidget*)));
 	connect(aDoc, SIGNAL(selectionChanged()),
 		this, SLOT(onSelectionChanged()));
@@ -783,6 +784,15 @@ void ApplicationCommonWindow::createGroupSimulation(Qtitan::RibbonPage* page)
 		connect(animationStopAction, SIGNAL(triggered()), this, SLOT(onStopAnimation()));
 		connect(animationResetAction, SIGNAL(triggered()), this, SLOT(onResetAnimation()));
 	}
+	if (Qtitan::RibbonGroup* groupSetConstraint = page->addGroup(groupIcon, tr("Constraint")))
+	{
+		groupSetConstraint->setOptionButtonVisible();
+		QPixmap hingeIcon;
+		hingeIcon = QPixmap(dir + QObject::tr("hinge.png"));
+		QAction *hingeAction;
+		hingeAction = groupSetConstraint->addAction(hingeIcon, tr("Hinge"), Qt::ToolButtonTextUnderIcon);
+		connect(hingeAction, SIGNAL(triggered()), this, SLOT(onSetHingeConstraint()));
+	}
 }
 
 void ApplicationCommonWindow::onCreateOCCBottle()
@@ -805,15 +815,24 @@ void ApplicationCommonWindow::onImportStepFile()
 
 void ApplicationCommonWindow::onMotionCalculator()
 {
-	HCMotionCalc pHCMotion = LibManager::loadHCMotionCalc();
-	if (!pHCMotion)
+	//HCMotionCalc pHCMotion = LibManager::loadHCMotionCalc();
+	//if (!pHCMotion)
+	//{
+	//	return;
+	//}
+	//QMdiArea* ws = getWorkspace();
+	//DocumentCommon* doc = (DocumentCommon*)(qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget())->getDocument());
+	//
+	//pHCMotion(doc->getPartModelList());
+	HCCalculator pHCCalculator = LibManager::loadHCCalculator();
+	if (!pHCCalculator)
 	{
 		return;
 	}
 	QMdiArea* ws = getWorkspace();
 	DocumentCommon* doc = (DocumentCommon*)(qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget())->getDocument());
-	
-	pHCMotion(doc->getPartModelList());
+
+	pHCCalculator(doc->getProject());
 }
 
 void ApplicationCommonWindow::onStartAnimation()
@@ -845,5 +864,16 @@ void ApplicationCommonWindow::onSelectedID(int selectdID)
 
 	doc->setSelectType((TopAbs_ShapeEnum)nCurrentType);
 
+}
+
+void ApplicationCommonWindow::onSetHingeConstraint()
+{
+	//HCGUIHinge* hingeWidget = new HCGUIHinge(this);
+	//
+	//hingeWidget->show();
+	QMdiArea* ws = getWorkspace();
+	MDIWindow* pMDI = qobject_cast<MDIWindow*>(ws->activeSubWindow()->widget());
+	pMDI->onHingeConstraint();
+	
 }
 

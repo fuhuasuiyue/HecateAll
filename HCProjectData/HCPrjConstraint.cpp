@@ -15,14 +15,24 @@ HCPrjConstraint::~HCPrjConstraint()
 {
 }
 
-const PartModel* HCPrjConstraint::getPartModelA()
+PartModel* HCPrjConstraint::getPartModelA()
 {
 	return m_ModelA;
 }
 
-const PartModel * HCPrjConstraint::getPartModelB()
+PartModel * HCPrjConstraint::getPartModelB()
 {
 	return m_ModelB;
+}
+
+void HCPrjConstraint::setPartModelA(PartModel * partA)
+{
+	m_ModelA = partA;
+}
+
+void HCPrjConstraint::setPartModelB(PartModel * partB)
+{
+	m_ModelB = partB;
 }
 
 ConstraintType HCPrjConstraint::getConstraintType()
